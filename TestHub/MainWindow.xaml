@@ -1,0 +1,64 @@
+﻿<Window x:Class="TestHub.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf" 
+        xmlns:local="clr-namespace:TestHub" 
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="900" ResizeMode="NoResize"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Left Sidebar -->
+        <StackPanel Grid.Column="0">
+            <!-- Tests -->
+            <ListBox Name="TestsListBox"  
+                     DisplayMemberPath="ProjTitle" 
+                     ItemsSource="{Binding Projects}"
+                     SelectedItem="{Binding SelectedProject, Mode=TwoWay}" 
+                     SelectionChanged="TestsListBox_SelectionChanged"
+                     Margin="10" Height="240">
+            </ListBox>
+
+            <!-- Manage Options -->
+            <StackPanel>
+                <Button Name="AddResltButton" Content="Add new result" IsEnabled="{Binding AddResltButton_Enabled}" Height="40" Margin="10, 5" Click="AddResltButton_Click"/>
+                <Button Name="MangProjButton" Content="Manage projects" Height="40" Margin="10, 5" Click="MangProjButton_Click"/>
+                <Button Name="MangUserButton" Content="Manage users" Height="40" Margin="10, 5" Click="MangUserButton_Click"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Main Content -->
+        <Grid Grid.Column="1" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            
+            <!-- Graphs -->
+            <ScrollViewer Grid.Column="1" Margin="10" 
+                          x:Name="MainContentScrollViewer"
+                          PreviewMouseWheel="ScrollViewer_ScrollSpeed"
+                          VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding QuestionPieSeriesCollections}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <!-- Display the question text -->
+                                <TextBlock Text="{Binding QuestionText}" FontSize="18" FontWeight="Bold" Margin="0,0,0,10" />
+
+                                <!-- Display the PieChart -->
+                                <lvc:PieChart Series="{Binding SeriesCollection}" LegendLocation="Right"
+                                              Width="350" Height="350" InnerRadius="50" Margin="0,0,0,20" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</Window>

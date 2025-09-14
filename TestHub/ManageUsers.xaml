@@ -1,0 +1,121 @@
+﻿<Window x:Class="TestHub.ManageUsers"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TestHub"
+        mc:Ignorable="d"
+        Title="ManageUsers" Height="450" Width="600" ResizeMode="NoResize"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Left Sidebar -->
+        <StackPanel Grid.Column="0">
+            <!-- Users -->
+            <ListBox Name="UsersListBox"
+                     ItemsSource="{Binding Users}"
+                     SelectedItem="{Binding SelectedUser}"
+                     Margin="10"
+                     Height="330">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Login}">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding HasCompletedTest}" Value="True">
+                                            <Setter Property="Foreground" Value="Red" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding HasCompletedTest}" Value="False">
+                                            <Setter Property="Foreground" Value="Black" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+
+            <!-- Manage Options -->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                
+                <Button Name="CreateUsrButton"  Grid.Column="0" Content="Create" Height="40" Margin="10, 5" Click="CreateUsrButton_Click"/>
+                <Button Name="RemoveUsrButton" Grid.Column="1" Content="Remove" IsEnabled="{Binding UserIsSelected}" Height="40" Margin="10, 5" Click="RemoveUsrButton_Click"/>
+            </Grid>
+        </StackPanel>
+
+        <!-- Main Content -->
+        <Grid Grid.Column="1" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="340" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- User data -->
+            <Grid Grid.Row="0" DataContext="{Binding SelectedUser}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Login: : " Margin="10,5"/>
+                <TextBox Grid.Row="0" Grid.Column="1" 
+                         Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}" 
+                         IsEnabled="{Binding DataContext.UserIsSelected, RelativeSource={RelativeSource AncestorType=Window}}" 
+                         Margin="10,5" />
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Name: " Margin="10,5"/>
+                <TextBox Grid.Row="1" Grid.Column="1" 
+                         Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" 
+                         IsEnabled="{Binding DataContext.UserIsSelected, RelativeSource={RelativeSource AncestorType=Window}}" 
+                         Margin="10,5" />
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Surname: " Margin="10,5"/>
+                <TextBox Grid.Row="2" Grid.Column="1" 
+                         Text="{Binding Surname, UpdateSourceTrigger=PropertyChanged}" 
+                         IsEnabled="{Binding DataContext.UserIsSelected, RelativeSource={RelativeSource AncestorType=Window}}" 
+                         Margin="10,5"/>
+
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="E-mail: " Margin="10,5"/>
+                <TextBox Grid.Row="3" Grid.Column="1" 
+                         Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" 
+                         IsEnabled="{Binding DataContext.UserIsSelected, RelativeSource={RelativeSource AncestorType=Window}}" 
+                         Margin="10,5"/>
+            </Grid>
+
+
+            <!-- Close Options -->
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="80"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Name="OKButton" Grid.Column="0" HorizontalAlignment="Right" Content="OK" Width="60" Height="30" Margin="10, 5" Click="OKButton_Click"/>
+                <Button Name="CancelButton" Grid.Column="1" Content="Cancel" Width="60" Height="30" Margin="10, 5" Click="CancelButton_Click"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
